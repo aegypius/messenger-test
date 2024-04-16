@@ -352,19 +352,6 @@ final class TestTransport implements TransportInterface
         self::$enableMessagesCollection = false;
     }
 
-    /**
-     * @param array<string, Envelope[]> $messagesCollection
-     */
-    private function collectMessage(array &$messagesCollection, Envelope $envelope, bool $force = false): void
-    {
-        if (!self::$enableMessagesCollection && !$force) {
-            return;
-        }
-
-        $messagesCollection[$this->name] ??= [];
-        $messagesCollection[$this->name][] = $envelope;
-    }
-
     public function isIntercepting(): bool
     {
         return self::$intercept[$this->name];
@@ -391,6 +378,19 @@ final class TestTransport implements TransportInterface
     public function supportsDelayStamp(): bool
     {
         return $this->clock && self::$supportDelayStamp[$this->name];
+    }
+
+    /**
+     * @param array<string, Envelope[]> $messagesCollection
+     */
+    private function collectMessage(array &$messagesCollection, Envelope $envelope, bool $force = false): void
+    {
+        if (!self::$enableMessagesCollection && !$force) {
+            return;
+        }
+
+        $messagesCollection[$this->name] ??= [];
+        $messagesCollection[$this->name][] = $envelope;
     }
 
     private function hasMessagesToProcess(): bool
