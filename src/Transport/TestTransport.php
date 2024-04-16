@@ -365,22 +365,22 @@ final class TestTransport implements TransportInterface
         $messagesCollection[$this->name][] = $envelope;
     }
 
-    private function isIntercepting(): bool
+    public function isIntercepting(): bool
     {
         return self::$intercept[$this->name];
     }
 
-    private function isCatchingExceptions(): bool
+    public function isCatchingExceptions(): bool
     {
         return self::$catchExceptions[$this->name];
     }
 
-    private function shouldTestSerialization(): bool
+    public function shouldTestSerialization(): bool
     {
         return self::$testSerialization[$this->name];
     }
 
-    private function isRetriesDisabled(): bool
+    public function isRetriesDisabled(): bool
     {
         return self::$disableRetries[$this->name];
     }
@@ -388,7 +388,7 @@ final class TestTransport implements TransportInterface
     /**
      * @phpstan-assert-if-true !null $this->clock
      */
-    private function supportsDelayStamp(): bool
+    public function supportsDelayStamp(): bool
     {
         return $this->clock && self::$supportDelayStamp[$this->name];
     }
