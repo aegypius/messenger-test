@@ -64,11 +64,13 @@ final class TestTransportFactoryTest extends TestCase
             'transport_name' => 'some-transport-name',
         ] + $options, $this->serializer);
         self::assertInstanceOf(TestTransport::class, $transport);
-        self::assertSame($expectedOptions['intercept'], $transport->isIntercepting());
-        self::assertSame($expectedOptions['catch_exceptions'], $transport->isCatchingExceptions());
-        self::assertSame($expectedOptions['test_serialization'], $transport->shouldTestSerialization());
-        self::assertSame($expectedOptions['disable_retries'], $transport->isRetriesDisabled());
-        self::assertSame($expectedOptions['support_delay_stamp'], $transport->supportsDelayStamp());
+        self::assertEquals($expectedOptions, [
+            'intercept' => $transport->isIntercepting(),
+            'catch_exceptions' => $transport->isCatchingExceptions(),
+            'test_serialization' => $transport->shouldTestSerialization(),
+            'disable_retries' => $transport->isRetriesDisabled(),
+            'support_delay_stamp' => $transport->supportsDelayStamp(),
+        ]);
     }
 
     /**
