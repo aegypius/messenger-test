@@ -32,6 +32,9 @@ final class TestTransportFactoryTest extends TestCase
 
     protected function setUp(): void
     {
+        // Reset statics
+        TestTransport::resetAll();
+
         $this->bus = $this->createStub(MessageBusInterface::class);
         $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
         $this->clock = $this->createStub(ClockInterface::class);
@@ -86,23 +89,26 @@ final class TestTransportFactoryTest extends TestCase
             'support_delay_stamp' => false,
         ];
 
-        yield 'defaults' => ['test://', [], $defaults];
-
-        yield 'pass options by dsn only' => ['test://?intercept=false', [], $defaults + [
+        yield 'pass options by dsn only' => ['test://?intercept=false&support_delay_stamp=true', [], [
             'intercept' => false,
-        ]];
+            'support_delay_stamp' => true,
+        ] + $defaults];
 
         yield 'pass options by options only' => ['test://', [
             'intercept' => false,
-        ], $defaults + [
+            'support_delay_stamp' => true,
+        ], [
             'intercept' => false,
-        ]];
+            'support_delay_stamp' => true,
+        ] + $defaults];
 
-        yield 'pass options by dns and options only' => ['test://?intercept=false', [
-            'intercept' => true,
-        ], $defaults + [
-            'intercept' => true,
-        ]];
+        yield 'pass options by dns and options only' => ['test://?catch_exceptions=false&support_delay_stamp=false', [
+            'catch_exceptions' => true,
+            'support_delay_stamp' => true,
+        ], [
+            'catch_exceptions' => true,
+            'support_delay_stamp' => true,
+        ] + $defaults];
     }
 
     /**
